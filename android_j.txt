@@ -1,0 +1,1034 @@
+1) Create a Food Delivery Application, showing Custom List of Food Items with its respective 
+price. Clicking of any Food Item, will open another layout with all the details of the selected 
+Item. In Detail layout use ImageSlider component with multiple food images.
+XML FILE
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity">
+ <ScrollView
+ android:scrollbars="vertical"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent">
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:orientation="vertical">
+ <RelativeLayout
+ android:id="@+id/main"
+ android:layout_width="match_parent"
+ android:layout_height="150dp">
+ <ImageView
+ android:id="@+id/img"
+ android:layout_width="match_parent"
+ android:layout_height="150dp"
+ android:src="@drawable/food2">
+ </ImageView>
+ </RelativeLayout>
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="200dp"
+ android:gravity="center"
+ android:orientation="vertical"
+ android:padding="5dp">
+ <ImageView
+ android:src="@drawable/khaman"
+ android:layout_width="200dp"
+ android:layout_height="150dp">
+ </ImageView>
+ <CheckBox
+ android:textSize="25dp"
+ android:text="Khaman"
+ android:id="@+id/khaman"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content">
+ </CheckBox>
+ </LinearLayout>
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="200dp"
+ android:gravity="center"
+ android:orientation="vertical"
+ android:padding="5dp">
+ <ImageView
+ android:src="@drawable/locho"
+ android:layout_width="200dp"
+ android:layout_height="150dp">
+ </ImageView>
+ <CheckBox
+ android:textSize="25dp"
+ android:text="Locho"
+ android:id="@+id/locho"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content">
+ </CheckBox>
+ </LinearLayout>
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="200dp"
+ android:gravity="center"
+ android:orientation="vertical"
+ android:padding="5dp">
+ <ImageView
+ android:src="@drawable/patra"
+ android:layout_width="200dp"
+ android:layout_height="150dp">
+ </ImageView>
+ <CheckBox
+ android:textSize="25dp"
+ android:text="patra"
+ android:id="@+id/patra"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content">
+ </CheckBox>
+ </LinearLayout>
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="200dp"
+ android:gravity="center"
+ android:orientation="vertical"
+ android:padding="5dp">
+ <ImageView
+ android:src="@drawable/smosha"
+ android:layout_width="200dp"
+ android:layout_height="150dp">
+ </ImageView>
+ <CheckBox
+ android:textSize="25dp"
+ android:text="Smosha"
+ android:id="@+id/smosha"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content">
+ </CheckBox>
+ </LinearLayout>
+
+<LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="200dp"
+ android:gravity="center"
+ android:orientation="vertical"
+ android:padding="5dp">
+ <ImageView
+ android:src="@drawable/pizza"
+ android:layout_width="200dp"
+ android:layout_height="150dp">
+ </ImageView>
+ <CheckBox
+ android:textSize="25dp"
+ android:text="pizza"
+ android:id="@+id/pizza"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content">
+ </CheckBox>
+ </LinearLayout>
+<Button
+ android:layout_marginLeft="150dp"
+ android:id="@+id/order"
+ android:text="Order"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"></Button>
+ </LinearLayout>
+</ScrollView>
+</RelativeLayout>
+JAVA 
+package com.example.foodorder;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+CheckBox khaman,locho,patra,smosha,pizza;
+Button order;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ khaman = findViewById(R.id.khaman);
+ locho = findViewById(R.id.locho);
+ patra = findViewById(R.id.patra);
+ smosha = findViewById(R.id.smosha);
+ pizza = findViewById(R.id.pizza);
+ order = findViewById(R.id.order);
+ order.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ int total = 0;
+ StringBuilder result = new StringBuilder();
+ result.append("selected Items");
+ result.append("\n==============");
+ if (khaman.isChecked()) {
+ result.append("\nkhaman = 120 Rs.");
+ total += 120;
+ }
+ if (locho.isChecked()) {
+ result.append("\nlocho = 100 Rs.");
+ total += 100;
+ }
+ if (patra.isChecked()) {
+ result.append("\npatra = 150 Rs.");
+ total += 150;
+ }
+ if (smosha.isChecked()) {
+ result.append("\nsmosha = 160 Rs.");
+ total += 160;
+ }
+ if (pizza.isChecked()) {
+ result.append("\npizza = 249 Rs.");
+ total += 249;
+ }
+ result.append("\n----------------");
+ result.append("\nTotal =" + total + "Rs.");
+ Toast.makeText(getApplicationContext(), result.toString(), 
+Toast.LENGTH_LONG).show();
+ }
+ });
+ 
+}
+}
+2) Application which shows image sliding
+XML FILE
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ tools:context=".img_slider"
+ android:orientation="vertical">
+ <com.smarteist.autoimageslider.SliderView
+ android:id="@+id/image_slider"
+ app:sliderAnimationDuration="600"
+ app:sliderAutoCycleDirection="back_and_forth"
+ app:sliderAutoCycleEnabled="true"
+ app:sliderIndicatorAnimationDuration="600"
+ app:sliderIndicatorGravity="center_horizontal|bottom"
+ app:sliderIndicatorMargin="15dp"
+ app:sliderIndicatorOrientation="horizontal"
+ app:sliderIndicatorPadding="3dp"
+ app:sliderIndicatorRadius="2dp"
+ app:sliderIndicatorSelectedColor="#5A5A5A"
+ app:sliderIndicatorUnselectedColor="#FFF"
+ app:sliderScrollTimeInSec="2"
+ app:sliderStartAutoCycle="true"
+ android:layout_width="match_parent"
+ android:layout_height="300dp" />
+ <TextView
+ android:layout_marginTop="100dp"
+ android:textSize="20dp"
+ android:text="Auto image Slider Tutorial/"
+ android:textAlignment="center"
+ android:layout_centerHorizontal="true"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"/>
+</LinearLayout>
+JAVA FILE
+package com.example.image_slider;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
+public class img_slider extends AppCompatActivity {
+ SliderView sliderView;
+ int[] images ={
+ R.drawable.one,
+ R.drawable.two,
+ R.drawable.there,
+ R.drawable.four,
+ R.drawable.five,
+};
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_img_slider);
+ sliderView=findViewById(R.id.image_slider);
+ SliderAdapter sliderAdapter=new SliderAdapter(images);
+ sliderView.setSliderAdapter(sliderAdapter);
+ sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+ sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
+ sliderView.startAutoCycle();
+ }
+}
+IMAGE ADAPTER
+package com.example.image_slider;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import com.smarteist.autoimageslider.SliderViewAdapter;
+public class SliderAdapter extends SliderViewAdapter<SliderAdapter.Holder> {
+ int[] images;
+ public SliderAdapter(int[] images){
+ this.images=images;
+ }
+ @Override
+ public Holder onCreateViewHolder(ViewGroup parent) {
+ View view = LayoutInflater.from(parent.getContext())
+ .inflate(R.layout.slider_item,parent,false);
+ return new Holder(view);
+ }
+ @Override
+ public void onBindViewHolder(Holder viewHolder, int position) {
+ viewHolder.imageView.setImageResource(images[position]);
+ }
+ @Override
+ public int getCount() {
+ return images.length;
+ }
+ public class Holder extends SliderViewAdapter.ViewHolder{
+ ImageView imageView;
+ public Holder(View iteamView){
+ super(iteamView);
+ imageView = iteamView.findViewById(R.id.image_view);
+ }
+ }
+}
+3) Create a User Registration page including following Fields Name, Email ( use TextWatcher to 
+check user provide Email), DOB (Use DateTimePicker Dialog), City (Use Spinner to select 
+City), Course_Name (Use AutoCompleteTextView to suggest Course name like BCA, BBA, 
+MCA, etc ), Provide Save Button Which shows Toast Message that User is Created.
+XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:id="@+id/r1"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity"
+ tools:ignore="MissingClass">
+ <ProgressBar
+ android:id="@+id/progressbar"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:minHeight="50dp"
+ android:minWidth="50dp"
+ android:layout_centerVertical="true"
+ android:layout_centerHorizontal="true" />
+ <ImageView
+ android:scaleType="fitXY"
+ android:alpha="0.4"
+ android:layout_width="415dp"
+ android:layout_height="740dp"
+ android:src="@drawable/stud">
+ </ImageView>
+ <ScrollView
+ android:layout_width="match_parent"
+ android:layout_height="match_parent">
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:orientation="vertical">
+ <TextView
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:background="@color/light_blue"
+ android:gravity="center"
+ android:text="Student Registration"
+ android:textAllCaps="true"
+ android:textColor="@color/black"
+ android:textSize="25dp">
+ </TextView>
+ <TextView
+ android:layout_width="wrap_content"
+ android:layout_height="match_parent"
+ android:layout_marginLeft="15dp"
+ android:layout_marginTop="30dp"
+ android:text="Name"
+ android:textStyle="bold"
+ android:textColor="@color/black"
+ android:textSize="20dp">
+ </TextView>
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:orientation="horizontal"
+ android:weightSum="10">
+ <EditText
+ android:id="@+id/e1"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_margin="10dp"
+ android:layout_weight="5"
+ android:hint="First Name"
+ android:inputType="textAutoComplete"
+ android:maxLength="10" />
+ <EditText
+ android:id="@+id/e2"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_margin="10dp"
+ android:layout_weight="5"
+ android:hint="Last Name"
+ android:inputType="textAutoComplete"
+ android:maxLength="15"
+ android:textColor="@color/black">
+ </EditText>
+ </LinearLayout>
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:orientation="vertical">
+ <TextView
+ android:layout_width="wrap_content"
+ android:layout_height="match_parent"
+ android:layout_margin="10dp"
+ android:text="Age"
+ android:textStyle="bold"
+ android:textColor="@color/black"
+ android:textSize="20dp">
+ </TextView>
+ <EditText
+ android:id="@+id/age"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_margin="5dp"
+ android:hint="Age"
+ android:inputType="number">
+
+</EditText>
+ <TextView
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:layout_marginStart="10dp"
+ android:layout_marginTop="10dp"
+ android:layout_marginEnd="10dp"
+ android:layout_marginBottom="10dp"
+ android:text="City"
+ android:textColor="@color/black"
+ android:textColorHint="@color/black"
+ android:textSize="20dp"
+ android:textStyle="bold"></TextView>
+ <Spinner
+ android:id="@+id/spinner"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content" />
+ <TextView
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:layout_margin="20dp"
+ android:background="@color/teal_700"
+ android:gravity="center"
+ android:text="Gender"
+ android:textStyle="bold"
+ android:textSize="25dp" />
+ </LinearLayout>
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:orientation="horizontal">
+ <RadioGroup
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:orientation="horizontal"
+ android:weightSum="9">
+ <RadioButton
+ android:id="@+id/male"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_marginLeft="5dp"
+ android:layout_marginRight="5dp"
+ android:layout_weight="3"
+ android:text="Male" />
+ <RadioButton
+ android:id="@+id/female"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_marginLeft="5dp"
+ android:layout_marginRight="5dp"
+ android:layout_weight="3"
+ android:text="Female" />
+ <RadioButton
+ android:id="@+id/other"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_marginLeft="5dp"
+ android:layout_marginRight="5dp"
+ android:layout_weight="3"
+ android:text="other">
+ </RadioButton>
+ </RadioGroup>
+ </LinearLayout>
+ <TextView
+ android:layout_width="wrap_content"
+ android:layout_height="match_parent"
+ android:layout_margin="10dp"
+ android:text="E-mail"
+ android:textStyle="bold"
+ android:textColor="@color/black"
+ android:textSize="20dp">
+ </TextView>
+ <EditText
+ android:id="@+id/email"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_margin="5dp"
+ android:hint="Enter Your Email"
+ android:inputType="textEmailAddress">
+ </EditText>
+ <TextView
+ android:layout_width="wrap_content"
+ android:layout_height="match_parent"
+ android:layout_margin="10dp"
+ android:text="Phone No"
+ android:textStyle="bold"
+ android:textColor="@color/black"
+ android:textSize="20dp">
+ </TextView>
+
+<EditText
+ android:id="@+id/p1"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_margin="5dp"
+ android:hint="Enter Your Mobile No"
+ android:inputType="phone">
+ </EditText>
+ <TextView
+ android:layout_width="wrap_content"
+ android:layout_height="match_parent"
+ android:layout_margin="10dp"
+ android:text="Address"
+ android:textStyle="bold"
+ android:textColor="@color/black"
+ android:textSize="20dp">
+ </TextView>
+ <EditText
+ android:id="@+id/streetaddress"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_margin="5dp"
+ android:hint="Street Address"
+ android:inputType="text">
+ </EditText>
+ <EditText
+ android:id="@+id/line2"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_margin="5dp"
+ android:hint="Street Address Line2"
+ android:inputType="text">
+ </EditText>
+ <EditText
+ android:id="@+id/region"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_margin="5dp"
+ android:hint="region"
+ android:inputType="text"></EditText>
+ <EditText
+ android:id="@+id/zipcode"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_margin="5dp"
+ android:hint="zip code"
+ android:inputType="number">
+ </EditText>
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:weightSum="10">
+ <Button
+ android:id="@+id/btn1"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_marginLeft="5dp"
+ android:layout_marginRight="5dp"
+ android:layout_weight="5"
+ android:text="Cancle"></Button>
+ <Button
+ android:id="@+id/btn2"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:layout_marginLeft="5dp"
+ android:layout_marginRight="5dp"
+ android:layout_weight="5"
+ android:text="Submit"></Button>
+ </LinearLayout>
+ </LinearLayout>
+ </ScrollView>
+</RelativeLayout>
+JAVA FILE
+
+package com.example.studentregistration;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.Toast;
+import java.sql.Time;
+import java.util.Timer;
+import java.util.TimerTask;
+public class MainActivity extends AppCompatActivity implements 
+AdapterView.OnItemSelectedListener {
+ String[] city = {"Amdavad", "baroda", "chennai", "div", "goa", 
+"hedrabad","imejika","junagadh","kolkata","motgadh","lalgadh","nagpur","opera","porbandar",
+"rajshthan","songadh","Other"};
+ Intent i1;
+ EditText lastname, age, Email, phone, address, Address2, region, zipcode;
+ String strname, strlastname, strage, stremail, strphone, straddress, Straddress2, strcity, 
+strregion, strzipcode;
+ Button submit, Cancle;
+ EditText name;
+ ProgressBar progressBar;
+ int no;
+ RelativeLayout r1;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ Handler handler = new Handler();
+ //final ProgressBar progressbar = (ProgressBar) findViewById(R.id.progressbar);
+ Spinner spin = (Spinner) findViewById(R.id.spinner);
+ spin.setOnItemSelectedListener(this);
+ ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, city);
+ aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+ spin.setAdapter(aa);
+ i1 = getIntent();
+ no = i1.getIntExtra("data", 0);
+ r1 = findViewById(R.id.r1);
+ name = findViewById(R.id.e1);
+ name.setText("" + no);
+ lastname = findViewById(R.id.e2);
+ age = findViewById(R.id.age);
+ Email = findViewById(R.id.email);
+ progressBar = findViewById(R.id.progressbar);
+ phone = findViewById(R.id.p1);
+ address = findViewById(R.id.streetaddress);
+ Address2 = findViewById(R.id.line2);
+ region = findViewById(R.id.region);
+ zipcode = findViewById(R.id.zipcode);
+ submit = findViewById(R.id.btn2);
+ Cancle = findViewById(R.id.btn1);
+ i1 = getIntent();
+ progressBar.setVisibility(View.GONE);
+ // Toast.makeText(MainActivity.this,i1.getStringExtra("data"), 
+Toast.LENGTH_SHORT).show();
+ submit.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ progressBar.setVisibility(View.VISIBLE);
+ handler.postDelayed(new Runnable() {
+ @Override
+ public void run() {
+ progressBar.setVisibility(View.GONE);
+ Toast.makeText(MainActivity.this, "" + "Name: " + strname + "\n" + "Last Name: " + 
+strlastname + "\n" + "Age:" + strage + "\n" + "E-mail:" + stremail + "\n" + "Phone:" + strphone + 
+"\n" + "Address:" + straddress + "\n" + "Adderss2:" + Straddress2 + "\n" + "Region:" + strregion + 
+"\n" + "Zipcode:" + strzipcode, Toast.LENGTH_SHORT).show();
+ }
+ }, 2000);
+ strname = name.getText().toString().trim();
+ strlastname = lastname.getText().toString().trim();
+ strage = age.getText().toString().trim();
+ stremail = Email.getText().toString().trim();
+ strphone = phone.getText().toString().trim();
+ straddress = address.getText().toString().trim();
+ Straddress2 = Address2.getText().toString().trim();
+ strregion = region.getText().toString().trim();
+ strzipcode = zipcode.getText().toString().trim();
+ }
+ });
+
+Cancle.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ name.setText("");
+ lastname.setText("");
+ age.setText("");
+ Email.setText("");
+ phone.setText("");
+ address.setText("");
+ Address2.setText("");
+ region.setText("");
+ zipcode.setText("");
+ name.setText("");
+ }
+ });
+ }
+ @Override
+ public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+ }
+ @Override
+ public void onNothingSelected(AdapterView<?> parent) {
+ }
+}
+
+4)
+Prepare a mobile application with the following functionality. 1 Prepare registration activity 2 
+Prepare login activity 3 Show Welcome user by using AlertDialog
+XML FILE
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:background="@drawable/student"
+ android:alpha="0.9"
+ tools:context=".MainActivity">
+ <LinearLayout
+ android:orientation="vertical"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent">
+ <EditText
+ android:id="@+id/ed1"
+ android:inputType="text"
+ android:hint="Enter Name"
+ android:textColorHint="@color/black"
+ android:layout_marginTop="50dp"
+ android:layout_marginLeft="50dp"
+ android:layout_marginRight="50dp"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content">
+ </EditText>
+ <EditText
+ android:id="@+id/ed2"
+ android:inputType="textPassword"
+ android:hint="Enter Password"
+ android:textColorHint="@color/black"
+ android:layout_marginTop="45dp"
+ android:layout_marginLeft="50dp"
+ android:layout_marginRight="50dp"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content">
+ </EditText>
+ <Button
+ android:id="@+id/btn"
+ android:layout_gravity="center"
+ android:text="Login"
+ android:textColor="@color/black"
+ android:layout_marginTop="50dp"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content">
+ </Button>
+ <TextView
+ android:id="@+id/txt"
+ android:layout_marginTop="50dp"
+ android:layout_marginLeft="20dp"
+ android:textSize="20dp"
+ android:text="No of Remaining time Attempt : 0"
+ android:textColor="@color/black"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content">
+ </TextView>
+ </LinearLayout>
+</RelativeLayout>
+HOME PAGE XML FILE
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:background="@drawable/student"
+ tools:context=".registor_page">
+ <LinearLayout
+ android:orientation="vertical"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent">
+ <ImageView
+ android:id="@+id/btn1"
+ android:background="@drawable/back"
+ android:layout_gravity="right"
+ android:src="@drawable/logout_24"
+ android:layout_width="50dp"
+ android:layout_marginTop="30dp"
+ android:layout_marginRight="15dp"
+ android:layout_height="50dp">
+ </ImageView>
+ </LinearLayout>
+</RelativeLayout>
+JAVA FILE 
+package com.example.login;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+private EditText ed1,ed2;
+private Button btn;
+private TextView txt;
+private String username="Admin";
+private String password="1234";
+boolean isValid =false;
+private int counter=0;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ ed1=findViewById(R.id.ed1);
+ ed2=findViewById(R.id.ed2);
+ btn=findViewById(R.id.btn);
+ txt=findViewById(R.id.txt);
+ btn.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ String inputname=ed1.getText().toString();
+ String inputpassword=ed2.getText().toString();
+ if(inputname.isEmpty() || inputpassword.isEmpty())
+ {
+ Toast.makeText(MainActivity.this,"Please Enter All The 
+Details",Toast.LENGTH_LONG).show();
+ }
+ else
+ {
+ isValid=Validate(inputname,inputpassword);
+ if(!isValid)
+ {
+ counter++;
+ Toast.makeText(MainActivity.this,"Incorrect Credentials 
+entered..!",Toast.LENGTH_LONG).show();
+ txt.setText("no of Attempts Remaining :"+counter);
+ if(counter==5)
+ {
+ btn.setEnabled(false);
+ }
+ }
+ else {
+ Toast.makeText(MainActivity.this,"login Successfully",Toast.LENGTH_LONG).show();
+ Intent i=new Intent(MainActivity.this,registor_page.class);
+ startActivity(i);
+ finish();
+ }
+ }
+ }
+ });
+ }
+ private boolean Validate(String name,String password)
+ {
+ if(name.equals(username) && password.equals(password))
+ {
+ return true;
+ }
+ return false;
+ }
+}
+HOME PAGA JAVA 
+package com.example.login;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+public class registor_page extends AppCompatActivity {
+ ImageView btn1;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_registor_page);
+ btn1=findViewById(R.id.btn1);
+ btn1.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ new AlertDialog.Builder(registor_page.this)
+ .setIcon(R.drawable.ic_launcher_foreground)
+ .setTitle("Exit")
+ .setMessage("Are You Sure Want To Exit....!")
+ .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+ @Override
+ public void onClick(DialogInterface dialogInterface, int i) {
+ finish();
+ }
+ }).setNeutralButton("Help", new DialogInterface.OnClickListener() {
+ @Override
+ public void onClick(DialogInterface dialogInterface, int i) {
+ Intent i1=new Intent(registor_page.this,MainActivity.class);
+ startActivity(i1);
+ }
+ }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+ @Override
+ public void onClick(DialogInterface dialogInterface, int i) {
+ dialogInterface.dismiss();
+ }
+ }).show();
+ }
+ });
+ }
+}
+
+5) In a main activity, take 2 editText and 5 buttons(addition, subtraction, multiplication, 
+division, reminder).When user clicks on any button, answer will be displayed on another 
+activity.
+XML FILE
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity">
+ <LinearLayout
+ android:layout_width="410dp"
+ android:layout_height="200dp"
+ android:orientation="horizontal">
+ <EditText
+ android:id="@+id/e1"
+ android:textStyle="bold"
+ android:textColor="@color/black"
+ android:layout_width="100dp"
+ android:layout_height="60dp"
+ android:layout_margin="50dp"
+ android:layout_weight="1"
+ android:hint="Number"
+ android:inputType="number"
+ android:textSize="20dp" />
+ <EditText
+ android:id="@+id/e2"
+ android:textColor="@color/black"
+ android:textStyle="bold"
+ android:layout_width="100dp"
+ android:layout_height="60dp"
+ android:layout_margin="50dp"
+ android:layout_weight="1"
+ android:hint="Number"
+ android:inputType="number"
+ android:textSize="20dp" />
+ </LinearLayout>
+ <LinearLayout
+ android:layout_marginTop="250dp"
+ android:orientation="horizontal"
+ android:layout_width="415dp"
+ android:layout_height="100dp">
+ <Button
+ android:background="@color/teal_700"
+ android:id="@+id/btn1"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:textStyle="bold"
+ android:text="+"
+ android:layout_margin="10dp"
+ android:textSize="25dp"
+ android:layout_weight="1">
+ </Button>
+ <Button
+ android:id="@+id/btn2"
+ android:background="@color/teal_700"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="-"
+ android:textStyle="bold"
+ android:layout_margin="10dp"
+ android:textSize="25dp"
+ android:layout_weight="1">
+ </Button>
+ <Button
+ android:id="@+id/btn3"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:layout_margin="10dp"
+ android:background="@color/teal_700"
+ android:textStyle="bold"
+ android:text="*"
+ android:textSize="25dp"
+ android:layout_weight="1">
+ </Button>
+ <Button
+ android:id="@+id/btn4"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="/"
+ android:background="@color/teal_700"
+ android:layout_margin="10dp"
+ android:textStyle="bold"
+ android:textSize="25dp"
+ android:layout_weight="1">
+ </Button>
+ </LinearLayout>
+</RelativeLayout>
+JAVA FILE
+package com.example.calculator;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+ private EditText edittext1, edittext2;
+ private Button btn1, btn2, btn3, btn4;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ setContentView(R.layout.activity_main);
+ addListenerOnButton();
+ }
+ public void addListenerOnButton() {
+ edittext1 = (EditText) findViewById(R.id.e1);
+ edittext2 = (EditText) findViewById(R.id.e2);
+ btn1 = (Button) findViewById(R.id.btn1);
+ btn2 = (Button) findViewById(R.id.btn2);
+ btn3 = (Button) findViewById(R.id.btn3);
+ btn4 = (Button) findViewById(R.id.btn4);
+ btn1.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ String value1 = edittext1.getText().toString();
+ String value2 = edittext2.getText().toString();
+ int a = Integer.parseInt(value1);
+ int b = Integer.parseInt(value2);
+ int sum = a + b;
+ Toast.makeText(getApplicationContext(), String.valueOf(sum), 
+Toast.LENGTH_LONG).show();
+ }
+ });
+ btn2.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ String value1 = edittext1.getText().toString();
+ String value2 = edittext2.getText().toString();
+ int a = Integer.parseInt(value1);
+ int b = Integer.parseInt(value2);
+ int sub = a - b;
+ Toast.makeText(getApplicationContext(), String.valueOf(sub), 
+Toast.LENGTH_LONG).show();
+ }
+ });
+ btn3.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ String value1 = edittext1.getText().toString();
+ String value2 = edittext2.getText().toString();
+ int a = Integer.parseInt(value1);
+ int b = Integer.parseInt(value2);
+ int mul = a * b;
+ Toast.makeText(getApplicationContext(), String.valueOf(mul), 
+Toast.LENGTH_LONG).show();
+ }
+ });
+ btn4.setOnClickListener(new View.OnClickListener() {
+ @Override
+ public void onClick(View view) {
+ String value1 = edittext1.getText().toString();
+ String value2 = edittext2.getText().toString();
+ float a = Integer.parseInt(value1);
+ float b = Integer.parseInt(value2);
+ float div = a / b;
+ Toast.makeText(getApplicationContext(), String.valueOf(div), Toast.LENGTH_LONG).show();
+ }
+ });
+ }
+}
