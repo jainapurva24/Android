@@ -1,0 +1,62 @@
+package com.example.sqlite2
+
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+
+class DBHelper3(context: Context?) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+
+    companion object {
+        private const val DATABASE_NAME = "library"
+        private const val DATABASE_VERSION = 5
+        private const val TABLE_NAME = "LIBRARYBOOK"
+        private const val COLUMN_BID = "BOOK_ID"
+        private const val COLUMN_BNAME = "BOOK_NAME"
+        private const val COLUMN_BPRICE = "BOOK_PRICE"
+    }
+
+    override fun onCreate(db: SQLiteDatabase) {
+        val createTable = ("CREATE TABLE $TABLE_NAME ( $COLUMN_BID INTEGER PRIMARY KEY, $COLUMN_BNAME TEXT, $COLUMN_BPRICE TEXT)")
+        db.execSQL(createTable)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+        onCreate(db)
+    }
+
+    fun insertData(bid: String, bname: String, bprice: String): Boolean {
+        val db = this.writableDatabase
+        val contentValues = ContentValues().apply {
+            put(COLUMN_BID, bid)
+            put(COLUMN_BNAME, bname)
+            put(COLUMN_BPRICE, bprice)
+        }
+        val result = db.insert(TABLE_NAME, null, contentValues)
+        return result != -1L
+    }
+
+    fun showData(): Cursor {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+    }
+
+    fun deleteData(bid: String): Boolean {
+        val db = this.writableDatabase
+        val result = db.delete(TABLE_NAME, "$COLUMN_BID=?", arrayOf(bid))
+        return result > 0
+    }
+
+    fun updateData(bid: String, bname: String, bprice: String): Boolean {
+        val db = this.writableDatabase
+        val contentValues = ContentValues().apply {
+            put(COLUMN_BNAME, bname)
+            put(COLUMN_BPRICE, bprice)
+        }
+        val result = db.update(TABLE_NAME, contentValues, "$COLUMN_BID=?", arrayOf(bid))
+        return result > 0
+    }
+}
