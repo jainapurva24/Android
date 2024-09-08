@@ -1,0 +1,97 @@
+package com.example.sqlite2
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+
+class LibraryActivity : AppCompatActivity() {
+    lateinit var bookID: EditText
+    lateinit var bookName: EditText
+    lateinit var bookPrice: EditText
+    lateinit var Submitbtn: Button
+    lateinit var Deletebtn: Button
+    lateinit var Updatebtn: Button
+    lateinit var dbHelper3: DBHelper3
+    lateinit var showData: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_library)
+
+        bookID = findViewById(R.id.bookid)
+        bookName = findViewById(R.id.bookname)
+        bookPrice = findViewById(R.id.bookprice)
+        showData = findViewById(R.id.showdata)
+        Submitbtn = findViewById(R.id.submitbtn)
+        Deletebtn = findViewById(R.id.deletebtn)
+        Updatebtn = findViewById(R.id.updatebtn)
+
+        dbHelper3 = DBHelper3(this)
+
+        Submitbtn.setOnClickListener {
+            getDataFromUser()
+            showDataFromDb()
+        }
+
+        Deletebtn.setOnClickListener {
+            deleteData()
+            showDataFromDb()
+        }
+
+        Updatebtn.setOnClickListener {
+            updateData()
+            showDataFromDb()
+        }
+    }
+
+    private fun getDataFromUser() {
+        val lbookid = bookID.text.toString()
+        val lbookname = bookName.text.toString()
+        val lbookprice = bookPrice.text.toString()
+        val isInserted = dbHelper3.insertData(lbookid, lbookname, lbookprice)
+        if (isInserted) {
+            Toast.makeText(applicationContext, "Inserted", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(applicationContext, "Insertion Failed", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showDataFromDb() {
+        val cursor = dbHelper3.showData()
+        showData.text = ""
+        if (cursor.moveToFirst()) {
+            do {
+                val bookid = cursor.getString(0)
+                val bookname = cursor.getString(1)
+                val bookprice = cursor.getString(2)
+                showData.append("Book ID: $bookid \nBook Name: $bookname \nBook Price: $bookprice\n\n")
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+    }
+
+    private fun deleteData() {
+        val lbookid = bookID.text.toString()
+        val isDeleted = dbHelper3.deleteData(lbookid)
+        if (isDeleted) {
+            Toast.makeText(applicationContext, "Deleted", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(applicationContext, "Deletion Failed", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun updateData() {
+        val lbookid = bookID.text.toString()
+        val lbookname = bookName.text.toString()
+        val lbookprice = bookPrice.text.toString()
+        val isUpdated = dbHelper3.updateData(lbookid, lbookname, lbookprice)
+        if (isUpdated) {
+            Toast.makeText(applicationContext, "Updated", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(applicationContext, "Update Failed", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
