@@ -1,0 +1,32 @@
+package com.example.first
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.TextView
+
+class display_Activity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_display)
+        val firstName = intent.getStringExtra("FIRST_NAME")
+        val lastName = intent.getStringExtra("LAST_NAME")
+        val gender = intent.getStringExtra("GENDER")
+        val address = intent.getStringExtra("ADDRESS")
+        val city = intent.getStringExtra("CITY")
+        val state = intent.getStringExtra("STATE")
+        val email = intent.getStringExtra("EMAIL")
+        val phoneNumber = intent.getStringExtra("PHONE_NUMBER")
+        val dob = intent.getStringExtra("DOB")
+        findViewById<TextView>(R.id.tvFirstName).text = "First Name: $firstName"
+        findViewById<TextView>(R.id.tvLastName).text = "Last Name: $lastName"
+        findViewById<TextView>(R.id.tvGender).text = "Gender: $gender"
+        findViewById<TextView>(R.id.tvAddress).text = "Address: $address"
+        findViewById<TextView>(R.id.tvCity).text = "City: $city"
+        findViewById<TextView>(R.id.tvState).text = "State: $state"
+        findViewById<TextView>(R.id.tvEmail).text = "Email: $email"
+        findViewById<TextView>(R.id.tvPhoneNumber).text = "Phone Number: $phoneNumber"
+        findViewById<TextView>(R.id.tvDOB).text = "Date of Birth: $dob"
+
+    }
+}
