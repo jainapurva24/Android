@@ -1,0 +1,7 @@
+String File :    
+<string-array name="font_names">
+        <item>Indian</item>
+        <item>USA</item>
+        <item>UK</item>
+        <item>PK</item>
+    </string-array>
