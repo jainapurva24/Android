@@ -1,0 +1,58 @@
+package com.example.crudmain
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+
+class DisplayActivity : AppCompatActivity() {
+
+    lateinit var result: TextView
+    lateinit var deleteUser: EditText
+    lateinit var btndelete: Button
+    lateinit var db: DBHelper
+
+    @SuppressLint("Range")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_display)
+        db = DBHelper(this)
+        result = findViewById(R.id.showdata)
+        deleteUser = findViewById(R.id.deleteUser)
+        btndelete = findViewById(R.id.btnDelete)
+
+        btndelete.setOnClickListener {
+
+            val deleteData = deleteUser.text.toString()
+            val isdelete = db.deleteUser(deleteData.toInt())
+            if (isdelete) {
+                /*THIS IS THE FUNCTION I MADE FOR SHOWING THE DATA IN THE REAL TIME DELETE  */
+                showUser()
+                /**********************/
+                Toast.makeText(applicationContext, "Data Saaf Hua", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(applicationContext, "Data Saaf Nahi Hua", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        /*THIS CODE IS FOR SHOWING THE USER DATA*/
+        val resultuser = db.showData();
+        result.text = resultuser
+        /*TILL HERE*/
+
+    }
+
+    /*HERE I MADE THE FUNCTION FOR SHOWING THE DATA */
+    fun showUser() {
+        val resultuser = db.showData();
+        result.text = resultuser
+    }
+
+}
