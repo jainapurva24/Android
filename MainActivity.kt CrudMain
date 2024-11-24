@@ -1,0 +1,64 @@
+package com.example.crudmain
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+
+class MainActivity : AppCompatActivity() {
+    lateinit var txtId: EditText
+    lateinit var txtName: EditText
+    lateinit var txtNumber: EditText
+    lateinit var txtSpin: Spinner
+    lateinit var btnSub: Button
+    lateinit var btnDis: Button
+    lateinit var btnUpdate: Button
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        txtId = findViewById(R.id.txtId)
+        txtName = findViewById(R.id.txtName)
+        txtNumber = findViewById(R.id.txtNum)
+        btnSub = findViewById(R.id.btnSubmit)
+        txtSpin = findViewById(R.id.txtGender)
+        btnDis = findViewById(R.id.btnDisplay)
+        btnUpdate = findViewById(R.id.btnUpdate)
+
+        val gender = arrayOf("Male", "Female", "Other")
+        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, gender)
+        txtSpin.adapter = arrayAdapter
+
+        /*HERE THE INSERT CODE STARTED */
+        btnSub.setOnClickListener {
+            val db = DBHelper(this)
+            val id = txtId.text.toString()
+            val name = txtName.text.toString()
+            val numb = txtNumber.text.toString()
+            val gen = txtSpin.selectedItem.toString()
+
+            if (id.isEmpty() || name.isEmpty() || numb.isEmpty() || gen.isEmpty()) {
+                Toast.makeText(this, "Please Enter Data!", Toast.LENGTH_SHORT).show()
+            } else {
+                db.addData(id, name, numb, gen)
+                Toast.makeText(this, "Data Inserted", Toast.LENGTH_SHORT).show()
+            }
+        }
+        /*HERE THE DATA INSERT CODE HAS BEEN ENDED */
+
+
+        btnDis.setOnClickListener {
+            val intent = Intent(this, DisplayActivity::class.java)
+            startActivity(intent)
+        }
+    }
+}
