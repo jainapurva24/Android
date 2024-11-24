@@ -1,0 +1,109 @@
+package com.example.crudmain
+
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Spinner
+import androidx.core.content.contentValuesOf
+
+class DBHelper(context: Context) : SQLiteOpenHelper(context, DBNAME, null, DBVERSION) {
+
+    companion object {
+        const val DBNAME = "Database"
+        const val DBVERSION = 1
+        const val Table = "CRUD"
+        const val idColumn = "id"
+        const val nameColumn = "name"
+        const val numColumn = "number"
+        const val genderColumn = "gender"
+
+
+    }
+
+    override fun onCreate(db: SQLiteDatabase?) {
+        val tableCreate = """
+            CREATE TABLE $Table(
+                $idColumn text,
+                $nameColumn text,
+                $numColumn text,
+                $genderColumn text
+            )
+        """
+        db?.execSQL(tableCreate)
+    }
+
+
+    override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
+
+        db?.execSQL("drop table if exists $Table")
+        onCreate(db)
+    }
+
+
+    /*THIS CODE IS FOR THE INSERT TH DATA VALUE IN THE DATA BASE */
+    fun addData(id: String, name: String, number: String, spinner: String) {
+        val values = ContentValues()
+        values.put(idColumn, id)
+        values.put(nameColumn, name)
+        values.put(numColumn, number)
+        values.put(genderColumn, spinner)
+
+        val db = this.writableDatabase
+        db.insert(Table, null, values)
+
+        db.close()
+    }
+/* THE INSERT FOR THE VALUE IN DATA BASE SI END HERE STAY HAPPY*/
+
+
+
+    /*HERE THE DISPLAY CODE FOR SHOWING THE RECORD FROM THE DATA BASE */
+    fun showData(): String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $Table", null)
+        val stringbuilder = StringBuilder()
+        stringbuilder.append("--------------------------------------------\n")
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getString(0)
+                val name = cursor.getString(1)
+                val numberuser = cursor.getString(2)
+                val gender = cursor.getString(3)
+                stringbuilder.append("ID: $id NAME: $name NUMBER: $numberuser GENDER: $gender \n ")
+            } while (cursor.moveToNext())
+        }
+        stringbuilder.append("---------------------------------------------------\n")
+        return if (stringbuilder.isEmpty()) "SAAF KAHNA SUKHI RHNA " else stringbuilder.toString()
+    }
+    /*THE DISPLAY CODE END HERE SAAF KAHNA SUKHI RHNA */
+
+
+
+
+
+
+/*THIS CODE IS FOR THE DELETE IN DATA BASE THE CODE WILL DELETE THE DATA ACCORDING TO THE DATA BASE ID VALUE*/
+    fun deleteUser(id: Int): Boolean {
+        val db = this.writableDatabase
+        val result = db.delete(Table, "$idColumn= ?", arrayOf(id.toString()))
+        return result > 0
+    }
+/*
+    fun updateUser(updateid: Int, name: String, number: String, spinner: String): Boolean {
+        val db = this.writableDatabase
+        val content = ContentValues().apply {
+            put(idColumn, updateid)
+            put(nameColumn, name)
+            put(numColumn, number)
+            put(genderColumn, spinner)
+        }
+        val result = db.update(Table, content, "$idColumn = ?", null)
+        return result > 0
+
+    }
+THIS CODE IS FOR THE UPDATE IN DATA BASE THE CODE WILL UPDATE THE DATA ACCORDING TO THE DATA BASE ID VALUE
+
+*/
+}
