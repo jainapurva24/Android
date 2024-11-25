@@ -1,0 +1,81 @@
+package com.example.exampractice
+
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+
+class Dbhelper3(context: Context) : SQLiteOpenHelper(context, DBNAME, null, DBVERSION) {
+
+    companion object {
+        var DBNAME = "ANAND"
+        var DBVERSION = 5
+        var TABLENAME = "EMP2"
+        var COL_ID = "id"
+        var COL_NAME = "name"
+        var COL_LNAME = "lname"
+        var COL_ADDRESS = "address"
+    }
+
+    override fun onCreate(db: SQLiteDatabase) {
+        val query =
+            "CREATE TABLE $TABLENAME ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT  , $COL_NAME TEXT , $COL_LNAME TEXT ,$COL_ADDRESS TEXT)"
+        db.execSQL(query)
+
+
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
+        db.execSQL("DROP TABLE IF EXISTS $TABLENAME")
+        onCreate(db)
+    }
+
+
+    fun insertData(fname: String, lname: String, Address: String): Boolean {
+
+        val db = this.writableDatabase
+        val content = ContentValues().apply {
+            put(COL_NAME, fname)
+            put(COL_LNAME, lname)
+            put(COL_ADDRESS, Address)
+
+        }
+        val result = db.insert(TABLENAME, null, content)
+        return result != -1L
+    }
+
+    fun deleteData(id: Int): Boolean {
+        val db = this.writableDatabase
+        val result = db.delete(TABLENAME, "$COL_ID=?", arrayOf(id.toString()))
+        return result > 0
+    }
+
+
+    fun showUser(): String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLENAME", null)
+        val Stringbuilder = StringBuilder()
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getString(0)
+                val fname = cursor.getString(1)
+                val lname = cursor.getString(2)
+                val address = cursor.getString(3)
+                Stringbuilder.append("ID :$id FNAME :$fname LNAME:$lname ADDRESS :$address ")
+            } while (cursor.moveToNext())
+        }
+        return if (Stringbuilder.isEmpty()) " THERE IS NO DATA" else Stringbuilder.toString()
+    }
+
+    fun checkUser(fname: String, lname: String): Boolean {
+        val db = this.readableDatabase
+        val checkCursor =
+            db.rawQuery(
+                "SELECT * FROM $TABLENAME WHERE $COL_NAME  = ? AND $COL_LNAME = ?",
+                arrayOf(fname, lname))
+
+        val eresult = checkCursor.count > 0
+        return eresult
+    }
+}
